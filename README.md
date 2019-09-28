@@ -1,4 +1,4 @@
-# Geant4 教程:fire:
+# Geant4 入门[哔哩哔哩视频](https://space.bilibili.com/19931352)教程:fire:
 
 ## 代码结构:cake:
 
