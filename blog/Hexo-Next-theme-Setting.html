@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>Hexo-Next-theme-Setting.html</title>
+
+</head>
+
+<body>
+
+<p><a href="http://theme-next.iissnan.com">referrence site1</a> <a href="https://blog.csdn.net/w_ngzeqi/article/details/73863543">referrence site2</a> 文章版权声明、文章加密访问、字数、时长、访问量 <a href="https://www.jianshu.com/p/1ff2fcbdd155">another site</a> <a href="https://blog.csdn.net/qq_32454537/article/details/79482896">referrence site3</a> 侧边栏社交小图标设置、设置网站图标、评论功能插件配置 <a href="https://blog.csdn.net/manmandong123/article/details/80739126">referrence site3</a> 添加评论功能<a href="https://blog.csdn.net/qq_32454537/article/details/79482879">another site</a> <a href="https://blog.csdn.net/lanuage/article/details/78991798">Somebody's blog Note</a> 站外分享 <a href="https://asdfv1929.github.io/categories/GitBlog/">another site</a> <a href="https://blog.csdn.net/qq_30242609/article/details/54799019">referrence sit4</a> 修改主题配色</p>
+<p>对于文章版权声明功能，可以直接去next主题下的<code>_config.yml</code>中开启，个人认为抱着开源开放特性，这个功能并不是很重要；</p>
+<h2 id="设置版权信息">设置版权信息</h2>
+<p>1.在next主题下的next/_config.yml中设置copyright;</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Declare license on posts</span>
+<span class="kw">post_copyright</span>:
+  <span class="kw">enable</span>: true
+  <span class="kw">license</span>: CC BY-NC-SA 3.0
+  <span class="kw">license_url</span>: <span class="co">#https://creativecommons.org/licenses/by-nc-sa/3.0/</span></code></pre>
+<p>在hexo站点配置文件_config.yml中设置url;</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># URL</span>
+<span class="co">## If your site is put in a subdirectory, set url as &#39;http://yoursite.com/child&#39; and root as &#39;/child/&#39;</span>
+<span class="kw">url</span>: http://lihui-snippets.cn/ <span class="co">#https://github.com/Hubery-Lee</span>
+<span class="kw">root</span>: /
+<span class="kw">permalink</span>: :year/:month/:day/:title/
+<span class="kw">permalink_defaults</span>: http://lihui-snippets.cn</code></pre>
+<h2 id="文章加密访问">文章加密访问</h2>
+<h3 id="该加密方法密码暴露在网页调试代码中">该加密方法密码暴露在网页调试代码中</h3>
+<p>1.配置加密功能，打开themes-&gt;next-&gt;layout-&gt;<em>partials-&gt;head.swig文件,在以下位置插入这样一段代码： {%asset</em>img password.png 插入位置%}</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">&lt;script&gt;</span>
+    <span class="kw">(function(){</span>
+        <span class="kw">if</span>(<span class="st">&#39;{{ page.password }}&#39;</span>)<span class="kw">{</span>
+            <span class="kw">if</span> <span class="kw">(prompt</span>(<span class="st">&#39;请输入文章密码&#39;</span><span class="kw">)</span> !== <span class="st">&#39;{{ page.password }}&#39;</span>)<span class="kw">{</span>
+                <span class="kw">alert</span>(<span class="st">&#39;密码错误！&#39;</span>);
+                <span class="kw">history.back</span>();
+            <span class="kw">}</span>
+        <span class="kw">}</span>
+    <span class="kw">})()</span>;
+<span class="kw">&lt;</span>/<span class="kw">script&gt;</span></code></pre>
+<p>在scaffolds文件夹post.md文件中，加入<code>password:</code>,新建博客将有如下的形式文件头；</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">---</span>
+<span class="kw">title</span>: {{ title }}
+<span class="kw">date</span>: {{ date }}
+<span class="kw">categories</span>:
+<span class="kw">tags</span>:
+<span class="kw">description</span>:
+<span class="kw">password</span>: 
+<span class="kw">---</span></code></pre>
+<p>2.设置给文章设置访问密码，经过以上的配置，<code>hexo new &quot;newblog&quot;</code>在<code>password: #密码</code>设置密码；也可以在以往的文章设置加密访问，只需在文章头中加入<code>password: #密码</code>即可；</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">---</span>
+<span class="kw">title</span>: The use of gnome-screenshot command
+<span class="kw">date</span>: 2018-09-11 16:12:50
+<span class="kw">tags</span>: [linux tool]
+<span class="kw">categories</span>: linux tool
+<span class="kw">description</span>: gnome-screenshot command
+<span class="kw">password</span>: pass
+<span class="kw">---</span></code></pre>
+<p>如，要访问这篇The use of gnome-screenshot command文章就需要输入密码pass;</p>
+<h3 id="该加密方法加密效果更好">该加密方法加密效果更好</h3>
+<p>以上方法给文章加密，可以通过浏览器调试界面看到网页密码，故而考虑另外的文章加密方式，可以参考留言版中的<a href="https://github.com/MikeCoder/hexo-blog-encrypt/blob/master/ReadMe.md">hexo-blog-encrypt</a>地址尝试另一种加密方式；注意，对next主题，安装<code>hexo-blog-encrypt2.0.*</code>;对加密文章的头文件写法如下：</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">---</span>
+<span class="kw">title</span>: The use of gnome-screenshot command
+<span class="kw">date</span>: 2018-09-11 16:12:50
+<span class="kw">tags</span>: [linux tool]
+<span class="kw">categories</span>: linux tool
+<span class="kw">abstract</span>: gnome-screenshot command<span class="kw">;encrypt</span> this article
+<span class="kw">password</span>: pass
+<span class="kw">message</span>: Please input password to read
+<span class="kw">---</span></code></pre>
+<p>其中，<code>abstract</code>后面写的是摘要，即是非加密文章头的<code>description</code>功能一样；<code>message</code>是加密文章所特有，指的是设置提示输入密码；<code>password</code>后面是设置的密码； Bug在打开文章页面后，不再显示摘要，解决办法是再加一遍<code>description</code>,故而，完全正确的加密文章抬头应该这么写：</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">---</span>
+<span class="kw">title</span>: The use of gnome-screenshot command
+<span class="kw">date</span>: 2018-09-11 16:12:50
+<span class="kw">tags</span>: [linux tool]
+<span class="kw">categories</span>: linux tool
+<span class="kw">abstract</span>: gnome-screenshot command<span class="kw">;encrypt</span> this article
+<span class="kw">password</span>: pass
+<span class="kw">message</span>: Please input password to read
+<span class="kw">description</span>: gnome-screenshot command<span class="kw">;encrypt</span> this article
+<span class="kw">---</span></code></pre>
+<p>经过测试，直接用<code>description</code>替代<code>abstract</code>也能达到这样的效果,并不存在Bug；</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">---</span>
+<span class="kw">title</span>: The use of gnome-screenshot command
+<span class="kw">date</span>: 2018-09-11 16:12:50
+<span class="kw">tags</span>: [linux tool]
+<span class="kw">categories</span>: linux tool
+<span class="kw">description</span>: gnome-screenshot command<span class="kw">;encrypt</span> this article
+<span class="kw">password</span>: pass
+<span class="kw">message</span>: Please input password to read
+<span class="kw">---</span></code></pre>
+<p><code>Bug: 第二种加密方式，没法自动生成文章目录栏；</code></p>
+<h2 id="访问量设置">访问量设置</h2>
+<p>采用busuanzi 和leancloud设置，在themes的文件夹下<code>_config.yml</code>中打开busuanzi配置，如下</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Show PV/UV of the website/page with busuanzi.</span>
+<span class="co"># Get more information on http://ibruce.info/2015/04/04/busuanzi/</span>
+<span class="kw">busuanzi_count</span>:
+  <span class="co"># count values only if the other configs are false</span>
+  <span class="kw">enable</span>: true
+  <span class="co"># custom uv span for the whole site</span>
+  <span class="kw">site_uv</span>: true
+  <span class="kw">site_uv_header</span>: <span class="kw">&lt;</span>i class=<span class="st">&quot;fa fa-user&quot;</span><span class="kw">&gt;&lt;</span>/i<span class="kw">&gt;</span>
+  <span class="kw">site_uv_footer</span>:
+  <span class="co"># custom pv span for the whole site</span>
+  <span class="kw">site_pv</span>: true
+  <span class="kw">site_pv_header</span>: <span class="kw">&lt;</span>i class=<span class="st">&quot;fa fa-eye&quot;</span><span class="kw">&gt;&lt;</span>/i<span class="kw">&gt;</span>
+  <span class="kw">site_pv_footer</span>:
+  <span class="co"># custom pv span for one page only</span>
+  <span class="kw">page_pv</span>: false
+  <span class="kw">page_pv_header</span>: <span class="kw">&lt;</span>i class=<span class="st">&quot;fa fa-file-eye&quot;</span><span class="kw">&gt;&lt;</span>/i<span class="kw">&gt;</span>
+  <span class="kw">page_pv_footer</span>:</code></pre>
+<p>其中，<code>site_uv</code>指的是user visitors,<code>site_pv</code>指的是passager visitors; <code>&lt;i class=&quot;fa fa-file-eye&quot;&gt;&lt;/i&gt;</code>设置的是显示图标</p>
+<p>对于文章的阅读量也可采用leancloud的应用来设置，如下：</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Show number of visitors to each article.</span>
+<span class="co"># You can visit https://leancloud.cn get AppID and AppKey.</span>
+<span class="kw">leancloud_visitors</span>:
+  <span class="kw">enable</span>: true
+  <span class="kw">app_id</span>:  <span class="co">#&lt;app_id&gt;</span>
+  <span class="kw">app_key</span>:   <span class="co">#&lt;app_key&gt;</span></code></pre>
+<p>相对于busuanzi统计计数方法，leancloud方法能通过leancloud账户管理，并且leancloud统计的阅读量能够在首页显示；busuanzi统计数据无法在首页显示；leancloud应用的配置可以参考这篇文章 <a href="https://www.meiwen.com.cn/subject/yssswftx.html">参考文章链接</a></p>
+<h2 id="评论功能设置">评论功能设置</h2>
+<p>评论功能采用leancloud valine应用，国内其他的友言、畅言和以及来必力都不能匿名评论，国外的gitalk,gitment以github用户授权评论，Hypercomments，Disqus等都被国内墙的厉害；只有国内leancloud应用具有匿名评论功能；在next主题下的<code>_config.yml</code>配置如下:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Valine.</span>
+<span class="co"># You can get your appid and appkey from https://leancloud.cn</span>
+<span class="co"># more info please open https://valine.js.org</span>
+<span class="kw">valine</span>:
+  <span class="kw">enable</span>: true
+  <span class="kw">appid</span>:  ooozwlclX00aJabPvk1WTj7J-gzGzoHsz <span class="co"># your leancloud application appid</span>
+  <span class="kw">appkey</span>:  CnXrRUVdUdMXgEvGbdolWGYX <span class="co"># your leancloud application appkey</span>
+  <span class="kw">notify</span>: false <span class="co"># mail notifier , https://github.com/xCss/Valine/wiki</span>
+  <span class="kw">verify</span>: false <span class="co"># Verification code</span>
+  <span class="kw">placeholder</span>: Just go go <span class="co"># comment box placeholder</span>
+  <span class="kw">avatar</span>: mm <span class="co"># gravatar style</span>
+  <span class="kw">guest_info</span>: nick,mail,link <span class="co"># custom comment header</span>
+  <span class="kw">pageSize</span>: 10 <span class="co"># pagination size</span></code></pre>
+<h2 id="站外分享功能">站外分享功能</h2>
+<p>具体的配置，可以参考文章开头列出的参考链接；在此，我只是用next主题模版，不作具体深入配置，工作中心放在作笔记上；在<code>_config.yml</code>中，打开百度分享选项即可：</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Baidu Share</span>
+<span class="co"># Available value:</span>
+<span class="co">#    button | slide</span>
+<span class="co"># Warning: Baidu Share does not support https.</span>
+<span class="kw">baidushare</span>:
+  <span class="kw">type</span>: slide</code></pre>
+<h2 id="侧边栏社交小图标设置">侧边栏社交小图标设置</h2>
+<p>next主题的网站小图标采用FrontAwesome插件<a href="https://fontawesome.com/icons?from=io">frontawesome icon site</a>;在实际应用中，在frontawesome网站搜索图标，在next主题的配置文件中用名字直接应用就行了，举例如下；</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Social Links.</span>
+<span class="co"># Usage: `Key: permalink || icon`</span>
+<span class="co"># Key is the link label showing to end users.</span>
+<span class="co"># Value before `||` delimeter is the target permalink.</span>
+<span class="co"># Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, globe icon will be loaded.</span>
+<span class="kw">social</span>:
+  <span class="kw">GitHub</span>: https://github.com/Hubery-Lee <span class="kw">||</span> <span class="kw">github</span>
+  <span class="kw">Runoob</span>: https://www.runoob.com <span class="kw">||</span> <span class="kw">cube</span>
+  <span class="co">#Google: https://plus.google.com/yourname || google</span>
+  <span class="co">#Twitter: https://twitter.com/yourname || twitter</span>
+  <span class="co">#FB Page: https://www.facebook.com/yourname || facebook</span>
+  <span class="co">#VK Group: https://vk.com/yourname || vk</span>
+  <span class="co">#StackOverflow: https://stackoverflow.com/yourname || stack-overflow</span>
+  <span class="co">#YouTube: https://youtube.com/yourname || youtube</span>
+  <span class="co">#Instagram: https://instagram.com/yourname || instagram</span>
+  <span class="co">#Skype: skype:yourname?call|chat || skype</span>
+
+<span class="kw">social_icons</span>:
+  <span class="kw">enable</span>: true
+  <span class="kw">icons_only</span>: false
+  <span class="kw">transition</span>: false</code></pre>
+<p>以上脚本中的<code>github,cube</code>即是在frontawesome上搜索到的图标名称；同样，links的图标也是这么配置的</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Blog rolls</span>
+<span class="kw">links_icon</span>: globe
+<span class="kw">links_title</span>: Index
+<span class="co">#links_layout: block</span>
+<span class="kw">links_layout</span>: inline
+
+<span class="kw">links</span>:
+  <span class="kw">Geant4</span>: http://geant4.web.cern.ch/
+  <span class="kw">Root</span>: https://root.cern.ch/</code></pre>
+<p>其中，<code>globe</code>即是frontawesome搜索到的图标名称；</p>
+<h2 id="设置网站图标">设置网站图标</h2>
+<p>若要对网站图标进行修改，只需将你要改的图标拷贝到<code>themes/next/source/images/</code>文件夹下，并修改<code>themes/next/_config.yml</code>文件中的，favicon后面对应的图片文件名即可；</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># For example, you put your favicons into `hexo-site/source/images` directory.</span>
+<span class="co"># Then need to rename &amp; redefine they on any other names, otherwise icons from Next will rewrite your custom icons in Hexo.</span>
+<span class="kw">favicon</span>:
+  <span class="kw">small</span>: /images/favicon-16x16-next.png
+  <span class="kw">medium</span>: /images/favicon-32x32-next.png
+  <span class="kw">apple_touch_icon</span>: /images/apple-touch-icon-next.png
+  <span class="kw">safari_pinned_tab</span>: /images/logo.svg
+  <span class="co">#android_manifest: /images/manifest.json</span>
+  <span class="co">#ms_browserconfig: /images/browserconfig.xml</span></code></pre>
+<h2 id="主题配色修改">主题配色修改</h2>
+<p>修改<code>themes/next/source/css/_variables/base.styl</code>文件；具体配色，暂时没有调整；另外<code>next/_config.yml</code>中有5种可直接用的配色方案，如下：</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Code Highlight theme</span>
+<span class="co"># Available value:</span>
+<span class="co">#    normal | night | night eighties | night blue | night bright</span>
+<span class="co"># https://github.com/chriskempson/tomorrow-theme</span>
+<span class="kw">highlight_theme</span>: night eighties</code></pre>
+<h2 id="头部顶栏背景颜色或图片设置">头部顶栏背景颜色或图片设置</h2>
+<p>1.在themes/next/source/css/<em>schemes/Mist/</em>header.styl中以下代码中修改颜色（我采用Next-Mist主题）</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">.header</span> { background: <span class="ot">$blue</span>-bright<span class="kw">;</span> }</code></pre>
+<p>2.也可改为背景图片，背景图片的添加如下：</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">.header</span> { background: url(<span class="st">&#39;../image/background.jpg&#39;</span>); }</code></pre>
+<p>将你要作为背景的图片<code>background.jpg</code>放到<code>Hexo/source/images/</code>文件夹下；当然你也可以采用图片网址链接，如：</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">.header</span> { background: url(<span class="st">&#39;http://xx.xx.xx.com/hexo/image/header-backgroud.jpg&#39;</span>); }</code></pre>
+<h2 id="页脚设置">页脚设置</h2>
+<p>在next/_config.yml中，修改<code>footer:</code>下面的配置，如下：</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">footer</span>:   
+  <span class="co">##这一段为页脚设置，footer英文意思即为页脚意思</span>
+  <span class="co"># Specify the date when the site was setup.</span>
+  <span class="co"># If not defined, current year will be used.</span>
+  <span class="co">#since: 2015</span>
+
+  <span class="co"># Icon between year and copyright info.</span>
+  <span class="kw">icon</span>: user
+
+  <span class="co"># If not defined, will be used `author` from Hexo main config.</span>
+  <span class="kw">copyright</span>:
+  <span class="co"># -------------------------------------------------------------</span>
+  <span class="co"># Hexo link (Powered by Hexo).</span>
+  <span class="kw">powered</span>: false
+
+  <span class="kw">theme</span>:
+    <span class="co"># Theme &amp; scheme info link (Theme - NexT.scheme).</span>
+    <span class="kw">enable</span>: false
+    <span class="co"># Version info of NexT after scheme info (vX.X.X).</span>
+    <span class="kw">version</span>: false
+  <span class="co"># -------------------------------------------------------------</span>
+  <span class="co"># Any custom text can be defined here.</span>
+  <span class="co">#custom_text: Hosted by &lt;a target=&quot;_blank&quot; href=&quot;https://pages.github.com&quot;&gt;GitHub Pages&lt;/a&gt;</span></code></pre>
+
+</body>
+</html>
